@@ -1,6 +1,6 @@
 import { GoogleGenAI, Type } from "@google/genai";
-import { UserProfileInput } from "../types";
-import { generateLocalPlan } from "../services/localPlanGenerator";
+import type { UserProfileInput } from "../types.js";
+import { generateLocalPlan } from "../services/localPlanGenerator.js";
 
 interface ApiRequest {
   method?: string;
