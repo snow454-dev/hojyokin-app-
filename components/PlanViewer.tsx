@@ -140,29 +140,29 @@ ${plan.section5_NextActionsAndGuidance.actionSteps.map((step, idx) => `${idx + 1
   return (
     <div className="space-y-6">
       {/* Control Top Bar */}
-      <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4 no-print">
-        <div className="flex items-center gap-2 w-full md:w-auto">
+      <div className="bg-white rounded-xl border border-slate-200 p-3 sm:p-4 shadow-sm flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 sm:gap-4 no-print">
+        <div className="grid grid-cols-1 sm:flex items-center gap-2 w-full md:w-auto">
           <button
             type="button"
             onClick={onReset}
-            className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors"
+            className="min-h-11 inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-semibold text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors"
           >
             <RotateCcw className="w-3.5 h-3.5" />
             条件を変更して再入力
           </button>
 
-          <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200 flex items-center gap-1">
+          <span className="min-h-11 text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-2 rounded-md border border-emerald-200 flex items-center justify-center gap-1">
             <CheckCircle2 className="w-3.5 h-3.5" />
             補助金診断・ドラフト生成完了
           </span>
         </div>
 
         {/* Action Buttons */}
-        <div className="flex flex-wrap items-center gap-2 w-full md:w-auto justify-end">
+        <div className="grid grid-cols-2 sm:flex items-center gap-2 w-full md:w-auto sm:justify-end">
           <button
             type="button"
             onClick={handleCopy}
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold text-slate-700 bg-white border border-slate-300 hover:bg-slate-50 rounded-lg shadow-xs transition-colors"
+            className="min-h-11 inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-bold text-slate-700 bg-white border border-slate-300 hover:bg-slate-50 rounded-lg shadow-xs transition-colors"
           >
             {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4 text-slate-500" />}
             <span>{copied ? 'コピーしました！' : '全文コピー'}</span>
@@ -171,7 +171,7 @@ ${plan.section5_NextActionsAndGuidance.actionSteps.map((step, idx) => `${idx + 1
           <button
             type="button"
             onClick={handleDownload}
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold text-slate-700 bg-white border border-slate-300 hover:bg-slate-50 rounded-lg shadow-xs transition-colors"
+            className="min-h-11 inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-bold text-slate-700 bg-white border border-slate-300 hover:bg-slate-50 rounded-lg shadow-xs transition-colors"
           >
             <Download className="w-4 h-4 text-slate-500" />
             <span>Markdown保存</span>
@@ -180,7 +180,7 @@ ${plan.section5_NextActionsAndGuidance.actionSteps.map((step, idx) => `${idx + 1
           <button
             type="button"
             onClick={handlePrint}
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-sm transition-colors"
+            className="col-span-2 sm:col-span-1 min-h-11 inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-sm transition-colors"
           >
             <Printer className="w-4 h-4" />
             <span>A4印刷 / PDF保存</span>
@@ -189,57 +189,57 @@ ${plan.section5_NextActionsAndGuidance.actionSteps.map((step, idx) => `${idx + 1
       </div>
 
       {/* Tabs Navigation */}
-      <div className="flex border-b border-slate-200 no-print gap-2">
+      <div className="grid grid-cols-2 sm:flex border-b border-slate-200 no-print gap-1 sm:gap-2">
         <button
           type="button"
           onClick={() => setActiveTab('preview')}
-          className={`pb-3 px-4 text-sm font-bold flex items-center gap-2 border-b-2 transition-all ${
+          className={`min-h-12 py-2 px-2 sm:pb-3 sm:px-4 text-xs sm:text-sm font-bold flex items-center justify-center sm:justify-start gap-1.5 sm:gap-2 border-b-2 rounded-t-lg transition-all ${
             activeTab === 'preview'
               ? 'border-blue-600 text-blue-700'
               : 'border-transparent text-slate-500 hover:text-slate-800'
           }`}
         >
           <FileText className="w-4 h-4" />
-          <span>事業計画書（完成プレビュー）</span>
+          <span className="sm:hidden">計画書</span><span className="hidden sm:inline">事業計画書（完成プレビュー）</span>
         </button>
 
         <button
           type="button"
           onClick={() => setActiveTab('edit')}
-          className={`pb-3 px-4 text-sm font-bold flex items-center gap-2 border-b-2 transition-all ${
+          className={`min-h-12 py-2 px-2 sm:pb-3 sm:px-4 text-xs sm:text-sm font-bold flex items-center justify-center sm:justify-start gap-1.5 sm:gap-2 border-b-2 rounded-t-lg transition-all ${
             activeTab === 'edit'
               ? 'border-blue-600 text-blue-700'
               : 'border-transparent text-slate-500 hover:text-slate-800'
           }`}
         >
           <Edit3 className="w-4 h-4" />
-          <span>セクション別・加筆編集モード</span>
+          <span className="sm:hidden">編集</span><span className="hidden sm:inline">セクション別・加筆編集モード</span>
         </button>
 
         <button
           type="button"
           onClick={() => setActiveTab('simulator')}
-          className={`pb-3 px-4 text-sm font-bold flex items-center gap-2 border-b-2 transition-all ${
+          className={`min-h-12 py-2 px-2 sm:pb-3 sm:px-4 text-xs sm:text-sm font-bold flex items-center justify-center sm:justify-start gap-1.5 sm:gap-2 border-b-2 rounded-t-lg transition-all ${
             activeTab === 'simulator'
               ? 'border-blue-600 text-blue-700'
               : 'border-transparent text-slate-500 hover:text-slate-800'
           }`}
         >
           <Sparkles className="w-4 h-4 text-amber-500" />
-          <span>労働生産性シミュレーター（数値微調整）</span>
+          <span className="sm:hidden">数値試算</span><span className="hidden sm:inline">労働生産性シミュレーター（数値微調整）</span>
         </button>
 
         <button
           type="button"
           onClick={() => setActiveTab('checklist')}
-          className={`pb-3 px-4 text-sm font-bold flex items-center gap-2 border-b-2 transition-all ${
+          className={`min-h-12 py-2 px-2 sm:pb-3 sm:px-4 text-xs sm:text-sm font-bold flex items-center justify-center sm:justify-start gap-1.5 sm:gap-2 border-b-2 rounded-t-lg transition-all ${
             activeTab === 'checklist'
               ? 'border-blue-600 text-blue-700'
               : 'border-transparent text-slate-500 hover:text-slate-800'
           }`}
         >
           <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-          <span>申請ステップ & gBizID案内</span>
+          <span className="sm:hidden">申請手順</span><span className="hidden sm:inline">申請ステップ & gBizID案内</span>
         </button>
       </div>
 
@@ -253,8 +253,8 @@ ${plan.section5_NextActionsAndGuidance.actionSteps.map((step, idx) => `${idx + 1
       {/* TAB 1: Preview Mode */}
       {activeTab === 'preview' && (
         <div className="space-y-6">
-          <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm no-print">
-            <div className="flex items-center justify-between gap-3 mb-4">
+          <div className="bg-white rounded-xl border border-slate-200 p-4 sm:p-6 shadow-sm no-print">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-3 mb-4">
               <div>
                 <p className="text-xs font-bold text-blue-700">北海道向け 3制度簡易診断</p>
                 <h2 className="text-lg font-bold text-slate-950">最有力候補：{plan.recommendedSubsidy}</h2>
@@ -278,7 +278,7 @@ ${plan.section5_NextActionsAndGuidance.actionSteps.map((step, idx) => `${idx + 1
             <p className="mt-4 text-[11px] text-slate-500">{plan.diagnosisNotice}</p>
           </div>
           {/* Header Summary Card */}
-          <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-xs">
+            <div className="bg-white rounded-xl border border-slate-200 p-4 sm:p-6 shadow-xs">
             <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-slate-500 mb-2">
               <span className="inline-flex items-center gap-1 bg-blue-50 text-blue-800 px-2.5 py-0.5 rounded border border-blue-200">
                 <Briefcase className="w-3.5 h-3.5" />
@@ -294,11 +294,11 @@ ${plan.section5_NextActionsAndGuidance.actionSteps.map((step, idx) => `${idx + 1
               </span>
             </div>
 
-            <h2 className="text-xl sm:text-2xl font-bold text-slate-950 tracking-tight mb-2">
+            <h2 className="text-lg sm:text-2xl font-bold text-slate-950 tracking-tight mb-2 break-words">
               {plan.title}
             </h2>
 
-            <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-slate-100">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-slate-500 pt-2 border-t border-slate-100">
               <span>推奨補助金枠: <strong className="text-slate-800">{plan.recommendedSubsidy}</strong></span>
               <span className="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-[11px]">
                 {plan.section4_QuantitativeSimulation.targetMetBadge}
@@ -307,7 +307,7 @@ ${plan.section5_NextActionsAndGuidance.actionSteps.map((step, idx) => `${idx + 1
           </div>
 
           {/* Document Body Card (Print-optimized) */}
-          <div className="bg-white rounded-xl border border-slate-200 p-6 sm:p-10 shadow-sm print:border-none print:shadow-none print:p-0 space-y-10 text-slate-800">
+          <div className="bg-white rounded-xl border border-slate-200 p-4 sm:p-10 shadow-sm print:border-none print:shadow-none print:p-0 space-y-8 sm:space-y-10 text-slate-800 overflow-hidden">
             {/* Section 1 */}
             <section className="space-y-3">
               <div className="flex items-center gap-2 pb-2 border-b-2 border-blue-600">
@@ -366,8 +366,9 @@ ${plan.section5_NextActionsAndGuidance.actionSteps.map((step, idx) => `${idx + 1
               </div>
 
               {/* Simulation Metrics Table */}
-              <div className="overflow-x-auto border border-slate-200 rounded-lg">
-                <table className="min-w-full divide-y divide-slate-200 text-xs text-left">
+              <p className="sm:hidden text-[11px] text-slate-500">表は左右にスワイプして確認できます。</p>
+              <div className="overflow-x-auto border border-slate-200 rounded-lg overscroll-x-contain">
+                <table className="min-w-[720px] divide-y divide-slate-200 text-xs text-left">
                   <thead className="bg-slate-100 font-bold text-slate-800">
                     <tr>
                       <th className="py-3 px-4">対象年度</th>
