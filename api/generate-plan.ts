@@ -23,19 +23,20 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
     return res.status(400).json({ error: "業種と現在の悩みは必須項目です。" });
   }
 
+  const baseline = generateLocalPlan(input);
+
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey || apiKey === "PLACEHOLDER_API_KEY") {
     // APIキーがない場合は高品質ローカルプランを返却
-    const plan = generateLocalPlan(input);
-    return res.status(200).json({ success: true, plan });
+    return res.status(200).json({ success: true, plan: baseline });
   }
 
   try {
     const ai = new GoogleGenAI({ apiKey });
     const response = await ai.models.generateContent({
       model: "gemini-2.5-flash",
-      contents: `あなたは北海道の中小企業・小規模事業者向け「IT導入補助金（通常枠/インボイス枠）」および「北海道DX推進補助金」の申請書作成・採択審査に極めて精通した認定支援機関・中小企業診断士です。
-以下の事業者情報から、審査員が高く評価する具体的で説得力のある事業計画書（下書き）を作成してください。
+      contents: `あなたは北海道の中小企業・小規模事業者向け補助金申請準備を支援するアシスタントです。採択・受給を保証せず、不明な制度要件は断定しないでください。
+簡易診断で選ばれた「${baseline.recommendedSubsidy}」向けに、具体的で説得力のある事業計画書ドラフトを作成してください。
 
 【事業者情報】
 - 業種: ${input.industry}
@@ -45,13 +46,16 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
 - 従業員数: ${input.employeeCount || "5名"}
 - 月間間接業務想定: ${input.monthlyAdminHoursPerPerson || 35}時間/人
 - 想定時間単価: ${input.hourlyLaborCost || 3200}円/時
+- 会社規模: ${input.companySize || "わからない"}
+- 主な投資目的: ${input.investmentPurpose || "まだ決まっていない"}
+- 予定予算: ${input.estimatedBudget || "未定"}
 
 【計画書に必ず含める審査ポイント】
 1. なぜその生成AIツールが必要なのか（北海道特有の広域移動・冬期積雪・労働力不足の文脈を反映）
 2. 具体的にどの業務フローをどう改革するのか（3ステップ）
 3. 浮いた時間をどの「本業（高付加価値業務）」へシフトさせるのか
 4. 定量目標（3年後に年率3%以上の労働生産性向上を達成するシミュレーション）
-5. 次のアクション（gBizIDプライム取得、道内専門家連携）`,
+5. 次のアクション（必要書類、公式公募要領の確認、道内公的窓口・専門家への相談）`,
       config: {
         responseMimeType: "application/json",
         responseSchema: {
@@ -127,11 +131,17 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
 
     return res.status(200).json({
       success: true,
-      plan: { ...parsed, fullMarkdownText },
+      plan: {
+        ...baseline,
+        ...parsed,
+        recommendedSubsidy: baseline.recommendedSubsidy,
+        subsidyMatches: baseline.subsidyMatches,
+        diagnosisNotice: baseline.diagnosisNotice,
+        fullMarkdownText: `${fullMarkdownText}\n\n---\n\n> この文書は申請準備用のドラフトです。採択・受給を保証するものではありません。提出前に最新の公式公募要領と専門家による確認を行ってください。`,
+      },
     });
   } catch (error) {
     console.warn("Gemini error in Vercel function, falling back to local generator:", error);
-    const fallback = generateLocalPlan(input);
-    return res.status(200).json({ success: true, plan: fallback });
+    return res.status(200).json({ success: true, plan: baseline });
   }
 }
