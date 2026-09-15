@@ -4,6 +4,9 @@ import {
   LOCATION_PRESETS, 
   AI_TOOL_PRESETS, 
   CHALLENGE_PRESETS, 
+  INVESTMENT_PURPOSES,
+  BUDGET_PRESETS,
+  PHASE_ONE_SUBSIDIES,
   DEMO_SCENARIOS, 
   DemoScenario 
 } from '../constants';
@@ -29,6 +32,9 @@ export const QuickInputForm: React.FC<Props> = ({ onSubmit, loading }) => {
   const [employeeCount, setEmployeeCount] = useState<string>('5名');
   const [monthlyAdminHours, setMonthlyAdminHours] = useState<number>(35);
   const [hourlyRate, setHourlyRate] = useState<number>(3500);
+  const [companySize, setCompanySize] = useState<UserProfileInput['companySize']>('わからない');
+  const [investmentPurpose, setInvestmentPurpose] = useState<UserProfileInput['investmentPurpose']>('AI・IT導入');
+  const [estimatedBudget, setEstimatedBudget] = useState<string>('未定');
 
   const handleApplyPreset = (scenario: DemoScenario) => {
     setIndustry(scenario.input.industry);
@@ -53,6 +59,9 @@ export const QuickInputForm: React.FC<Props> = ({ onSubmit, loading }) => {
       employeeCount,
       monthlyAdminHoursPerPerson: monthlyAdminHours,
       hourlyLaborCost: hourlyRate,
+      companySize,
+      investmentPurpose,
+      estimatedBudget,
     });
   };
 
@@ -67,7 +76,7 @@ export const QuickInputForm: React.FC<Props> = ({ onSubmit, loading }) => {
             </div>
             <div className="space-y-1">
               <h4 className="text-lg font-bold text-slate-900">
-                事業計画書ドラフトを作成中...
+                3制度を診断し、ドラフトを作成中...
               </h4>
               <p className="text-xs text-slate-500">
                 北海道特有の地域課題・業務プロセス改善・3年後数値計画を組み立てています
@@ -84,7 +93,7 @@ export const QuickInputForm: React.FC<Props> = ({ onSubmit, loading }) => {
               </div>
               <div className="flex items-center gap-2 text-indigo-600 font-medium">
                 <span className="w-2 h-2 rounded-full bg-indigo-500"></span>
-                <span>③ IT導入補助金基準（年率+3%以上向上）を試算</span>
+                <span>③ 最適な制度向けの計画書ドラフトを作成</span>
               </div>
             </div>
           </div>
@@ -97,25 +106,25 @@ export const QuickInputForm: React.FC<Props> = ({ onSubmit, loading }) => {
           <div className="space-y-2 max-w-2xl">
             <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-300 text-xs font-semibold">
               <Sparkles className="w-3.5 h-3.5 text-blue-400" />
-              北海道中小企業・小規模事業者向け AI導入補助金 申請支援
+              北海道の中小企業・小規模事業者向け 補助金AI診断
             </div>
             <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-white">
-              忙しい経営者のための「タイパ最重視」事業計画書ドラフト作成
+              3制度から有力候補を診断し、事業計画書ドラフトまで作成
             </h2>
             <p className="text-slate-300 text-sm leading-relaxed">
-              業種・導入したいAI・現在の悩みの<strong className="text-white">3つの最小入力</strong>で、
-              「北海道特有の課題（移動コスト・冬期積雪・労働力不足）」「本業シフトの定性ストーリー」「IT導入補助金の3年後年率+3%数値目標シミュレーション」を含む審査採択レベルの下書きを一発作成します。
+              所在地・会社規模・投資目的・現在の悩みを入力すると、対象になりそうな制度を比較し、
+              最有力候補向けの申請準備ドラフトを作成します。北海道特有の人手不足や広域移動、冬季課題も計画に反映します。
             </p>
           </div>
 
           <div className="flex-shrink-0 bg-white/10 backdrop-blur-sm border border-white/10 p-4 rounded-xl text-xs space-y-1.5 text-slate-200">
             <div className="font-bold text-white flex items-center gap-1.5">
               <Zap className="w-4 h-4 text-amber-400" />
-              審査採択の3大ポイントを網羅
+              第一段階で扱う3制度
             </div>
-            <div className="text-slate-300">① なぜその生成AIか（地域・業界課題）</div>
-            <div className="text-slate-300">② 生産性向上の具体業務プロセス</div>
-            <div className="text-slate-300">③ 3〜5年後の労働生産性向上数値計画</div>
+            {PHASE_ONE_SUBSIDIES.map((item, index) => (
+              <div key={item.name} className="text-slate-300">{index + 1}. {item.name}</div>
+            ))}
           </div>
         </div>
 
@@ -216,6 +225,27 @@ export const QuickInputForm: React.FC<Props> = ({ onSubmit, loading }) => {
                 className="w-full pl-9 p-3 border border-slate-300 rounded-lg text-sm text-slate-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 pt-2 border-t border-slate-100">
+          <div className="space-y-2">
+            <label className="block text-sm font-bold text-slate-800">会社規模</label>
+            <select value={companySize} onChange={(e) => setCompanySize(e.target.value as UserProfileInput['companySize'])} className="w-full p-3 border border-slate-300 rounded-lg text-sm bg-white">
+              <option>小規模事業者</option><option>中小企業</option><option>わからない</option>
+            </select>
+          </div>
+          <div className="space-y-2">
+            <label className="block text-sm font-bold text-slate-800">主な投資目的</label>
+            <select value={investmentPurpose} onChange={(e) => setInvestmentPurpose(e.target.value as UserProfileInput['investmentPurpose'])} className="w-full p-3 border border-slate-300 rounded-lg text-sm bg-white">
+              {INVESTMENT_PURPOSES.map(item => <option key={item}>{item}</option>)}
+            </select>
+          </div>
+          <div className="space-y-2">
+            <label className="block text-sm font-bold text-slate-800">予定予算</label>
+            <select value={estimatedBudget} onChange={(e) => setEstimatedBudget(e.target.value)} className="w-full p-3 border border-slate-300 rounded-lg text-sm bg-white">
+              {BUDGET_PRESETS.map(item => <option key={item}>{item}</option>)}
+            </select>
           </div>
         </div>
 
@@ -363,7 +393,7 @@ export const QuickInputForm: React.FC<Props> = ({ onSubmit, loading }) => {
               </>
             ) : (
               <>
-                <span>事業計画書（下書き）を一発生成する</span>
+                <span>3制度を診断してドラフトを作る</span>
                 <ArrowRight className="w-5 h-5" />
               </>
             )}
