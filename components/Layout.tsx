@@ -22,11 +22,11 @@ export const Layout: React.FC<LayoutProps> = ({ children, onPrint, hasResult }) 
                 <div className="flex items-center gap-2">
                   <span className="text-xs font-semibold tracking-wider text-blue-400 uppercase">Hokkaido AI Subsidy Agent</span>
                   <span className="hidden sm:inline-block px-2 py-0.5 text-[10px] font-medium bg-blue-950 text-blue-300 border border-blue-800 rounded">
-                    IT導入補助金2026要件準拠
+                    北海道・主要3制度対応
                   </span>
                 </div>
                 <h1 className="text-base sm:text-lg font-bold text-white tracking-tight leading-tight">
-                  北海道AI導入補助金 事業計画書ジェネレーター
+                  北海道補助金AI診断
                 </h1>
               </div>
             </div>
@@ -64,11 +64,11 @@ export const Layout: React.FC<LayoutProps> = ({ children, onPrint, hasResult }) 
           <div className="flex items-center gap-2">
             <ShieldCheck className="w-4 h-4 text-emerald-600" />
             <span>
-              本ツールは経済産業省「IT導入補助金」等の公募要件および審査基準を参考に下書きを作成します。
+              本ツールは申請準備と事業計画書ドラフトの作成を支援します。採択・受給を保証するものではありません。
             </span>
           </div>
           <p className="text-slate-400">
-            © 北海道中小企業AI推進支援パートナー / 北海道経済産業局・各商工会議所支援情報準拠
+            © 北海道中小企業AI推進支援パートナー
           </p>
         </div>
       </footer>
