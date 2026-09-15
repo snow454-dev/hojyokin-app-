@@ -1,4 +1,41 @@
-import { UserProfileInput, BusinessPlanResult, QuantitativeMetric } from "../types";
+import { UserProfileInput, BusinessPlanResult, QuantitativeMetric, SubsidyMatch } from "../types";
+
+export function diagnoseSubsidies(input: UserProfileInput): SubsidyMatch[] {
+  const purpose = input.investmentPurpose || "まだ決まっていない";
+  const text = `${input.aiTool || ""} ${input.primaryChallenge || ""}`;
+  const small = input.companySize === "小規模事業者";
+  const aiSignals = /AI|IT|クラウド|システム|DX|自動化|ソフト|デジタル/i.test(text);
+  const salesSignals = /販路|集客|広告|Web|EC|店舗|顧客|売上|SNS/i.test(text);
+  const laborSignals = /人手不足|省力|設備|機器|自動|効率|生産/i.test(text);
+
+  const rows: SubsidyMatch[] = [
+    {
+      name: "デジタル化・AI導入補助金2026",
+      score: Math.min(95, 48 + (purpose === "AI・IT導入" ? 32 : 0) + (aiSignals ? 15 : 0)),
+      status: "確認が必要",
+      reason: "AI・ITツールによる業務効率化との適合性を評価しました。",
+      checks: ["導入するITツールが対象として登録されているか", "申請枠と補助対象経費", "gBizIDプライムとSECURITY ACTIONの準備"]
+    },
+    {
+      name: "小規模事業者持続化補助金",
+      score: Math.min(92, 38 + (purpose === "販路開拓・集客" ? 34 : 0) + (salesSignals ? 12 : 0) + (small ? 8 : 0)),
+      status: "確認が必要",
+      reason: "販路開拓・集客と、小規模事業者要件への適合性を評価しました。",
+      checks: ["業種別の常時使用する従業員数要件", "経営計画と販路開拓施策のつながり", "管轄の商工会・商工会議所への事前相談"]
+    },
+    {
+      name: "中小企業省力化投資補助金",
+      score: Math.min(94, 42 + (purpose === "設備・省力化" ? 34 : 0) + (laborSignals ? 14 : 0)),
+      status: "確認が必要",
+      reason: "人手不足の解消と設備・システムによる省力化との適合性を評価しました。",
+      checks: ["カタログ注文型・一般型のどちらに該当するか", "投資前後の業務時間と付加価値額", "対象設備・経費と公募期間"]
+    }
+  ];
+
+  return rows
+    .map(row => ({ ...row, status: row.score >= 75 ? "有力候補" : row.score >= 50 ? "確認が必要" : "対象外の可能性" } as SubsidyMatch))
+    .sort((a, b) => b.score - a.score);
+}
 
 export function generateLocalPlan(input: UserProfileInput): BusinessPlanResult {
   const industry = input.industry?.trim() || "IT・AI・受託開発・Web制作";
@@ -8,6 +45,8 @@ export function generateLocalPlan(input: UserProfileInput): BusinessPlanResult {
   const employeeCountNum = parseInt(input.employeeCount?.replace(/[^0-9]/g, "") || "5", 10) || 5;
   const adminHoursPerPerson = input.monthlyAdminHoursPerPerson || 35;
   const hourlyRate = input.hourlyLaborCost || 3200;
+  const subsidyMatches = diagnoseSubsidies(input);
+  const recommendedSubsidy = subsidyMatches[0].name;
 
   // 定量シミュレーション計算
   const totalAnnualAdminHours = employeeCountNum * adminHoursPerPerson * 12;
@@ -17,7 +56,7 @@ export function generateLocalPlan(input: UserProfileInput): BusinessPlanResult {
   const valueCreatedYear5 = Math.round(valueCreatedYear1 * 1.25);
 
   const cleanAiToolName = aiTool.split("（")[0].replace(/[\/／].*$/, "");
-  const title = `【IT導入補助金2026・事業計画書】${industry}における「${cleanAiToolName}」導入による労働生産性向上計画`;
+  const title = `【${recommendedSubsidy}・事業計画書ドラフト】${industry}における「${cleanAiToolName}」導入計画`;
 
   // 地域特性テキストのカスタマイズ
   let regionContext = "";
@@ -148,8 +187,8 @@ ${section4CalcBasis}
 | :--- | :--- | :--- | :--- | :--- |
 ${metricsTable.map(m => `| ${m.year} | ${m.laborProductivity} | **${m.productivityGrowthRate}** | ${m.annualHoursSaved} | ${m.estimatedValueCreated} |`).join('\n')}
 
-> **【補助金要件判定】**
-> 本数値計画は、IT導入補助金が求める「3年後に年率3%以上向上（累計9%以上）」を十分に満たす計画（年率+4.2%達成設計）となっており、審査における加点・採択要件を完璧にクリアしています。
+> **【重要】**
+> この診断と数値計画は申請準備用のドラフトです。採択・受給を保証するものではありません。提出前に最新の公募要領と専門家による確認を行ってください。
 
 ---
 
@@ -163,7 +202,9 @@ ${metricsTable.map(m => `| ${m.year} | ${m.laborProductivity} | **${m.productivi
 
   return {
     title,
-    recommendedSubsidy: "IT導入補助金（通常枠 / インボイス枠）および 北海道DX・省力化推進補助金",
+    recommendedSubsidy,
+    subsidyMatches,
+    diagnosisNotice: "入力内容に基づく簡易診断です。対象要件・公募期間・補助対象経費は必ず最新の公式公募要領で確認してください。",
     overview: {
       industry,
       location,
@@ -177,7 +218,7 @@ ${metricsTable.map(m => `| ${m.year} | ${m.laborProductivity} | **${m.productivi
       explanation: section4Explanation,
       calculationBasis: section4CalcBasis,
       metricsTable,
-      targetMetBadge: "IT導入補助金 要件達成（3年後年率+3%以上クリア）"
+      targetMetBadge: "数値目標案（公募要領との照合が必要）"
     },
     section5_NextActionsAndGuidance: {
       gBizIdNotice: "申請には「gBizIDプライム」が必須です。発行には1〜2週間を要するため、直ちに取得手続きを開始してください。",
