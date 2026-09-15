@@ -153,7 +153,7 @@ ${plan.section5_NextActionsAndGuidance.actionSteps.map((step, idx) => `${idx + 1
 
           <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200 flex items-center gap-1">
             <CheckCircle2 className="w-3.5 h-3.5" />
-            計画書下書き生成完了
+            補助金診断・ドラフト生成完了
           </span>
         </div>
 
@@ -253,6 +253,30 @@ ${plan.section5_NextActionsAndGuidance.actionSteps.map((step, idx) => `${idx + 1
       {/* TAB 1: Preview Mode */}
       {activeTab === 'preview' && (
         <div className="space-y-6">
+          <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm no-print">
+            <div className="flex items-center justify-between gap-3 mb-4">
+              <div>
+                <p className="text-xs font-bold text-blue-700">北海道向け 3制度簡易診断</p>
+                <h2 className="text-lg font-bold text-slate-950">最有力候補：{plan.recommendedSubsidy}</h2>
+              </div>
+              <span className="text-[11px] text-slate-500">入力内容に基づく目安</span>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              {plan.subsidyMatches?.map((match, index) => (
+                <div key={match.name} className={`rounded-xl border p-4 ${index === 0 ? 'border-blue-300 bg-blue-50' : 'border-slate-200 bg-slate-50'}`}>
+                  <div className="flex items-start justify-between gap-2">
+                    <h3 className="text-sm font-bold text-slate-900">{match.name}</h3>
+                    <span className={`shrink-0 text-[10px] font-bold px-2 py-1 rounded-full ${match.status === '有力候補' ? 'bg-emerald-100 text-emerald-800' : match.status === '確認が必要' ? 'bg-amber-100 text-amber-800' : 'bg-slate-200 text-slate-700'}`}>{match.status}</span>
+                  </div>
+                  <div className="mt-3 h-2 rounded-full bg-white overflow-hidden"><div className="h-full bg-blue-600 rounded-full" style={{ width: `${match.score}%` }} /></div>
+                  <p className="mt-2 text-xs text-slate-700 leading-relaxed">適合度 {match.score}% — {match.reason}</p>
+                  <p className="mt-3 text-[11px] font-bold text-slate-600">確認すること</p>
+                  <ul className="mt-1 text-[11px] text-slate-600 space-y-1 list-disc pl-4">{match.checks.map(check => <li key={check}>{check}</li>)}</ul>
+                </div>
+              ))}
+            </div>
+            <p className="mt-4 text-[11px] text-slate-500">{plan.diagnosisNotice}</p>
+          </div>
           {/* Header Summary Card */}
           <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-xs">
             <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-slate-500 mb-2">
@@ -370,8 +394,8 @@ ${plan.section5_NextActionsAndGuidance.actionSteps.map((step, idx) => `${idx + 1
               <div className="bg-emerald-50 border border-emerald-200 p-4 rounded-xl flex items-start gap-3 text-xs text-emerald-900">
                 <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5" />
                 <div>
-                  <strong className="block font-bold mb-0.5">IT導入補助金の採択要件を完全充足</strong>
-                  経済産業省の要件（3年後に年率3%以上、または5年後に年率2%以上向上）を満たしており、審査官が最も注視する定量的実現可能性の根拠が明確に提示されています。
+                  <strong className="block font-bold mb-0.5">申請用の数値目標案を作成しました</strong>
+                  入力値から試算した参考値です。実際の申請では、最新の公募要領・決算数値・対象経費と照合し、根拠資料を整えてください。
                 </div>
               </div>
             </section>
