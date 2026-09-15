@@ -37,6 +37,39 @@ export const AI_TOOL_PRESETS = [
   "社内文書検索・ナレッジ特化型生成AI（マニュアル・属人化解消）"
 ];
 
+export const INVESTMENT_PURPOSES = [
+  "AI・IT導入",
+  "販路開拓・集客",
+  "設備・省力化",
+  "まだ決まっていない"
+] as const;
+
+export const BUDGET_PRESETS = [
+  "50万円未満",
+  "50万〜150万円",
+  "150万〜500万円",
+  "500万円以上",
+  "未定"
+];
+
+export const PHASE_ONE_SUBSIDIES = [
+  {
+    name: "デジタル化・AI導入補助金2026",
+    summary: "登録されたITツール等の導入による業務効率化・DXを支援",
+    suitableFor: "AI・クラウド・会計・受発注・顧客管理など"
+  },
+  {
+    name: "小規模事業者持続化補助金",
+    summary: "小規模事業者の販路開拓や業務効率化の取組を支援",
+    suitableFor: "Webサイト・広告・店舗改善・新規顧客獲得など"
+  },
+  {
+    name: "中小企業省力化投資補助金",
+    summary: "人手不足に対応する設備・システム導入を支援",
+    suitableFor: "自動化設備・省力化機器・業務プロセス改善など"
+  }
+];
+
 export const CHALLENGE_PRESETS = [
   "受託開発・AI導入案件の急増に対しエンジニア・PMが不足し、要件定義や提案書・ドキュメント作成に工数が奪われ開発速度が上がらない",
   "深刻な人手不足でバックオフィスや事務に追われ、本来のコア業務（営業・施工・接客・開発）に時間が割けない",
