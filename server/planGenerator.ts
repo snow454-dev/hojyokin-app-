@@ -1,7 +1,9 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { UserProfileInput, BusinessPlanResult } from "../types";
+import { diagnoseSubsidies } from "../services/localPlanGenerator";
 
 export function generateLocalFallbackPlan(input: UserProfileInput): BusinessPlanResult {
+  const subsidyMatches = diagnoseSubsidies(input);
   const industry = input.industry || "観光・宿泊業";
   const location = input.location || "北海道 札幌市";
   const aiTool = input.aiTool || "ChatGPTによる顧客問い合わせ・メール・多言語対応の自動化";
@@ -130,7 +132,9 @@ ${metricsTable.map(m => `| ${m.year} | ${m.laborProductivity} | **${m.productivi
 
   return {
     title,
-    recommendedSubsidy: "IT導入補助金（通常枠 / インボイス枠）および 北海道DX・省力化推進補助金",
+    recommendedSubsidy: subsidyMatches[0].name,
+    subsidyMatches,
+    diagnosisNotice: "入力内容に基づく簡易診断です。対象要件・公募期間・補助対象経費は必ず最新の公式公募要領で確認してください。",
     overview: {
       industry,
       location,
@@ -326,8 +330,13 @@ ${parsed.section5_NextActionsAndGuidance?.specialistConsultationNotice}
 ${parsed.section5_NextActionsAndGuidance?.actionSteps?.map((step: string, idx: number) => `${idx + 1}. ${step}`).join('\n') || ''}
 `;
 
+    const baseline = generateLocalFallbackPlan(input);
     return {
+      ...baseline,
       ...parsed,
+      recommendedSubsidy: baseline.recommendedSubsidy,
+      subsidyMatches: baseline.subsidyMatches,
+      diagnosisNotice: baseline.diagnosisNotice,
       fullMarkdownText
     };
   } catch (err) {
