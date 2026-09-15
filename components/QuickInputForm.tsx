@@ -13,6 +13,7 @@ import {
 import { UserProfileInput } from '../types';
 import { Sparkles, Building2, Bot, AlertCircle, MapPin, ChevronDown, ChevronUp, ArrowRight, Zap } from 'lucide-react';
 import { Spinner } from './Spinner';
+import { SeoContent } from './SeoContent';
 
 interface Props {
   onSubmit: (input: UserProfileInput) => void;
@@ -400,6 +401,7 @@ export const QuickInputForm: React.FC<Props> = ({ onSubmit, loading }) => {
           </button>
         </div>
       </form>
+      <SeoContent />
     </div>
   );
 };
