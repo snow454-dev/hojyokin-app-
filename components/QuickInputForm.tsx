@@ -70,7 +70,7 @@ export const QuickInputForm: React.FC<Props> = ({ onSubmit, loading }) => {
       {/* Loading Modal / Overlay during generation */}
       {loading && (
         <div className="fixed inset-0 bg-slate-900/70 backdrop-blur-xs z-50 flex items-center justify-center p-4 animate-in fade-in">
-          <div className="bg-white rounded-2xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-blue-100 text-center space-y-4">
+          <div className="bg-white rounded-2xl p-5 sm:p-8 max-w-md w-full shadow-2xl border border-blue-100 text-center space-y-4">
             <div className="w-16 h-16 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mx-auto border-4 border-blue-100 animate-pulse">
               <Sparkles className="w-8 h-8 text-blue-600" />
             </div>
@@ -101,7 +101,7 @@ export const QuickInputForm: React.FC<Props> = ({ onSubmit, loading }) => {
       )}
 
       {/* Hero / Value Proposition Banner */}
-      <div className="bg-gradient-to-br from-blue-900 via-slate-900 to-indigo-950 text-white rounded-2xl p-6 sm:p-8 shadow-md border border-slate-800">
+      <div className="bg-gradient-to-br from-blue-900 via-slate-900 to-indigo-950 text-white rounded-2xl p-5 sm:p-8 shadow-md border border-slate-800">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="space-y-2 max-w-2xl">
             <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-300 text-xs font-semibold">
@@ -151,7 +151,7 @@ export const QuickInputForm: React.FC<Props> = ({ onSubmit, loading }) => {
       </div>
 
       {/* Main Input Form */}
-      <form onSubmit={handleSubmit} className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-6">
+      <form onSubmit={handleSubmit} className="bg-white rounded-2xl border border-slate-200 p-4 sm:p-8 shadow-sm space-y-6">
         <div className="border-b border-slate-200 pb-4">
           <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
             <Building2 className="w-5 h-5 text-blue-600" />
@@ -189,7 +189,7 @@ export const QuickInputForm: React.FC<Props> = ({ onSubmit, loading }) => {
               value={industry}
               onChange={(e) => setIndustry(e.target.value)}
               placeholder="例: 観光・宿泊業、農業、建設業、飲食店など"
-              className="w-full p-3 border border-slate-300 rounded-lg text-sm text-slate-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full min-h-12 p-3 border border-slate-300 rounded-lg text-base sm:text-sm text-slate-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               required
             />
           </div>
@@ -222,7 +222,7 @@ export const QuickInputForm: React.FC<Props> = ({ onSubmit, loading }) => {
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
                 placeholder="例: 北海道 札幌市、帯広市、旭川市、釧路市など"
-                className="w-full pl-9 p-3 border border-slate-300 rounded-lg text-sm text-slate-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full min-h-12 pl-9 p-3 border border-slate-300 rounded-lg text-base sm:text-sm text-slate-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
           </div>
@@ -231,19 +231,19 @@ export const QuickInputForm: React.FC<Props> = ({ onSubmit, loading }) => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 pt-2 border-t border-slate-100">
           <div className="space-y-2">
             <label className="block text-sm font-bold text-slate-800">会社規模</label>
-            <select value={companySize} onChange={(e) => setCompanySize(e.target.value as UserProfileInput['companySize'])} className="w-full p-3 border border-slate-300 rounded-lg text-sm bg-white">
+            <select value={companySize} onChange={(e) => setCompanySize(e.target.value as UserProfileInput['companySize'])} className="w-full min-h-12 p-3 border border-slate-300 rounded-lg text-base sm:text-sm bg-white">
               <option>小規模事業者</option><option>中小企業</option><option>わからない</option>
             </select>
           </div>
           <div className="space-y-2">
             <label className="block text-sm font-bold text-slate-800">主な投資目的</label>
-            <select value={investmentPurpose} onChange={(e) => setInvestmentPurpose(e.target.value as UserProfileInput['investmentPurpose'])} className="w-full p-3 border border-slate-300 rounded-lg text-sm bg-white">
+            <select value={investmentPurpose} onChange={(e) => setInvestmentPurpose(e.target.value as UserProfileInput['investmentPurpose'])} className="w-full min-h-12 p-3 border border-slate-300 rounded-lg text-base sm:text-sm bg-white">
               {INVESTMENT_PURPOSES.map(item => <option key={item}>{item}</option>)}
             </select>
           </div>
           <div className="space-y-2">
             <label className="block text-sm font-bold text-slate-800">予定予算</label>
-            <select value={estimatedBudget} onChange={(e) => setEstimatedBudget(e.target.value)} className="w-full p-3 border border-slate-300 rounded-lg text-sm bg-white">
+            <select value={estimatedBudget} onChange={(e) => setEstimatedBudget(e.target.value)} className="w-full min-h-12 p-3 border border-slate-300 rounded-lg text-base sm:text-sm bg-white">
               {BUDGET_PRESETS.map(item => <option key={item}>{item}</option>)}
             </select>
           </div>
@@ -279,7 +279,7 @@ export const QuickInputForm: React.FC<Props> = ({ onSubmit, loading }) => {
             value={aiTool}
             onChange={(e) => setAiTool(e.target.value)}
             placeholder="例: ChatGPTによる顧客対応自動化、Claudeによる書類作成など"
-            className="w-full p-3 border border-slate-300 rounded-lg text-sm text-slate-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full min-h-12 p-3 border border-slate-300 rounded-lg text-base sm:text-sm text-slate-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             required
           />
         </div>
@@ -314,7 +314,7 @@ export const QuickInputForm: React.FC<Props> = ({ onSubmit, loading }) => {
             value={primaryChallenge}
             onChange={(e) => setPrimaryChallenge(e.target.value)}
             placeholder="例: 人手不足でバックオフィスが回らない、残業を減らしたい、冬期の書類処理が滞るなど"
-            className="w-full p-3 border border-slate-300 rounded-lg text-sm text-slate-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full p-3 border border-slate-300 rounded-lg text-base sm:text-sm text-slate-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             required
           />
         </div>
@@ -384,7 +384,7 @@ export const QuickInputForm: React.FC<Props> = ({ onSubmit, loading }) => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full sm:w-auto px-8 py-4 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-bold text-base rounded-xl shadow-lg hover:shadow-blue-500/20 transition-all flex items-center justify-center gap-2 disabled:bg-slate-400 cursor-pointer"
+            className="w-full sm:w-auto min-h-14 px-5 sm:px-8 py-3.5 sm:py-4 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-bold text-sm sm:text-base rounded-xl shadow-lg hover:shadow-blue-500/20 transition-all flex items-center justify-center gap-2 disabled:bg-slate-400 cursor-pointer"
           >
             {loading ? (
               <>
